@@ -39,9 +39,10 @@ def train():
     X_train_sm,X_test_sm,y_train_sm,y_test_sm = train_test_split(X_res,y_res, test_size=0.2,
                                                              stratify=y_res,random_state=42)
     #Model training
-    rf = RandomForestClassifier(random_state=42,n_estimators=75, criterion='gini', max_depth=50, max_leaf_nodes=5000,n_jobs=-1)
+    rf = RandomForestClassifier(random_state=42,n_estimators=100, criterion='gini', max_depth=75, max_leaf_nodes=5000,n_jobs=-1)
     scaler = StandardScaler()
-    model = Pipeline(steps=[('scaler',scaler),('clf',rf)])
+    pca = PCA(n_components=9)
+    model = Pipeline(steps=[('scaler',scaler),('pca',pca),('clf',rf)])
     model.fit(X_train_sm,y_train_sm)
     # Save model
     dump(model, 'RandomF.joblib')

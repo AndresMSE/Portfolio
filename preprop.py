@@ -60,12 +60,7 @@ def preprocess_train(file):
     LE = LabelEncoder().fit(y)
     y = LE.transform(y)
     y_df = pd.Series(y,name='target')
-    # PCA transformation
-    pca = PCA()
-    pca.fit(X)
-    components = pca.transform(X)
-    components_df = pd.DataFrame(components, columns=['V'+str(i+1) for i in range(13) ])
-    input_val = components_df.copy()
+    input_val = X.copy()
     output_val = y_df.copy()
     return input_val, output_val
 
@@ -107,10 +102,5 @@ def preprocess_test(file):
     X['start_station'] = X.start_station.cat.codes
     X['end_station'] = X.end_station.astype('category')
     X['end_station'] = X.end_station.cat.codes
-    # PCA transformation
-    pca = PCA()
-    pca.fit(X)
-    components = pca.transform(X)
-    components_df = pd.DataFrame(components, columns=['V'+str(i+1) for i in range(13) ])
-    input_val = components_df.copy()
+    input_val = X.copy()
     return input_val,trip_id

@@ -13,12 +13,12 @@ def predict():
     name = input('CSV file name...  ')
     file = './'+name+'.csv'
     # Preprocessing
-    input_val,id = preprocess_test(file)
+    input_val,id_trp = preprocess_test(file)
     # Predictions
     model = load('RandomF.joblib')
     predictions = model.predict(input_val)
     results = pd.DataFrame(predictions, columns=['passholder_type'])
-    results = results.join(id, how='left')
+    results = results.join(id_trp, how='left')
     result_enc = {0:'Annual Pass', 1:'Flex Pass', 2:'Monthly Pass', 3:'One Day Pass', 4: 'Testing',5:'Walk-up'}
     results.passholder_type = results.passholder_type.map(result_enc)
     #Export predictions
