@@ -28,7 +28,6 @@ def preprocess_train(file):
     # Data cleaning
     data.dropna(subset=['passholder_type'],inplace=True)
     data.dropna(subset=['start_lat','start_lon','end_lat','end_lon','plan_duration'],inplace=True)
-    data = data[data['passholder_type']!='Testing']
 
     # Data transformation
     data_t = data.copy()
@@ -78,7 +77,10 @@ def preprocess_test(file):
     trip_id = data.trip_id
     data = data.drop(columns=['trip_id','bike_id'])
     # Data cleaning
-    data.dropna(subset=['start_lat','start_lon','end_lat','end_lon'],inplace=True)
+    data.start_lat.fillna(value=data.start_lat.mean(),inplace=True)
+    data.start_lon.fillna(value=data.start_lon.mean(),inplace=True)
+    data.end_lon.fillna(value=data.end_lat.mean(),inplace=True)
+    data.end_lat.fillna(value=data.end_lat.mean(),inplace=True)
 
     # Data transformation
     data_t = data.copy()

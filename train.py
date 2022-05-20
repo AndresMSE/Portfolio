@@ -16,6 +16,7 @@ from sklearn.decomposition import PCA
 
 
 
+
 def train():
     """
     Function to import and preprocess data to train model
@@ -27,18 +28,18 @@ def train():
     # SMOTE & RU
     # Undersampling
     n = int(len(input_val)/5)    # Number of final samples per class 
-    sampling_dict = {0:32973, 1:11420, 2:n, 3:39888, 4:n}   # Number of points for each class
+    sampling_dict = {0:32973, 1:11420, 2:n, 3:39888, 4:43,5:n}   # Number of points for each class
     rus = RandomUnderSampler(random_state=42, sampling_strategy=sampling_dict)
     X_rus, y_rus = rus.fit_resample(input_val,output_val)
     # SMOTE
-    sampling_dict = {0:n, 1:n, 2:n, 3:n, 4:n}    # Balanced classes
+    sampling_dict = {0:n, 1:n, 2:n, 3:n, 4:n, 5:n}    # Balanced classes
     sms = SMOTE(random_state=42, sampling_strategy=sampling_dict)
     X_res, y_res = sms.fit_resample(X_rus,y_rus)
     # Exclusion method
     X_train_sm,X_test_sm,y_train_sm,y_test_sm = train_test_split(X_res,y_res, test_size=0.2,
                                                              stratify=y_res,random_state=42)
     #Model training
-    rf = RandomForestClassifier(random_state=42,n_estimators=50, criterion='gini', max_depth=50, max_leaf_nodes=10000,n_jobs=-1)
+    rf = RandomForestClassifier(random_state=42,n_estimators=75, criterion='gini', max_depth=50, max_leaf_nodes=5000,n_jobs=-1)
     scaler = StandardScaler()
     model = Pipeline(steps=[('scaler',scaler),('clf',rf)])
     model.fit(X_train_sm,y_train_sm)
